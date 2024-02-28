@@ -64,71 +64,77 @@
         <h2>Mã chấm công</h2>
         <label for="employeeIDs">Vui lòng nhập mã số nhân viên :</label>
         <input type="text" id="employeeIDs">
-        <select id="clockinList" >
-            <!-- Chi Nhanh MIỀN NAM --> 
-            <option value="61">Văn Phòng</option>
-            <option value="63">Kho Vận </option>
-            <option value="11">BookCity Vạn Hạnh </option>
-            <option value="12">Lê Lợi </option>
-            <option value="13">Vincom Lê Thánh Tôn </option>
-            <option value="14">An Phú</option>
-            <option value="15">Estella </option>
-            <option value="16">Vincom Lê Văn Việt </option>
-            <option value="17">Kios Nguyễn Văn Bình</option>
-            <option value="18">Phú Thọ</option>
-            <option value="19">Ba Tháng Hai </option>
-            <option value="110">Đại Thế Giới </option>
-            <option value="111">Hùng Vương </option>
-            <option value="112">BookCity Hồng Bàng</option>
-            <option value="113">Crescent Mall </option>
-            <option value="114">Vivo City </option>
-            <option value="115">Nguyễn Oanh </option>
-            <option value="116">Vincom Cộng Hòa </option>
-            <option value="117">Rạch Miễu </option>
-            <option value="118">Nguyễn Ảnh Thủ </option>
-            <option value="119">Quang Trung </option>
-            <option value="120">BookCity Bình Dương </option>
-            <option value="121">Vincom Biên Hòa </option>
-            <option value="122">Đồng Khởi_Biên Hòa </option>
-            <option value="123">Nguyễn trãi </option>
-            <option value="124">Outlet Doi cung  </option>
-            <option value="125">Kontum Trần Phú </option>
-            <option value="126">Kiosk Thủ Đức </option>
-            <!-- Chi Nhánh MIỀN BẮC -->
-            <option value="21">Vincom Hải Phòng </option>
-            <option value="22">Vincom Hạ Long </option>
-            <option value="23">GardenMall </option>
-            <option value="24">Lotte Center </option>
-            <option value="25">Vincom Bà Triệu </option>
-            <option value="26">Vincom Nguyen Chi Thanh </option>
-            <option value="27">Le Van Thiem </option>
-            <option value="28">Kiosk Phố Sách </option>
-            <option value="29">Lac Long Quan </option>
-            <!-- Chi Nhánh MIỀN TRUNG -->
-            <option value="31">Nha Sach Vinh</option>
-            <option value="411">Nha Sach  Lotte Vinh</option>
-            <option value="32">Phú Xuân </option>
-            <option value="33">Sân Bay Phú Bài </option>
-            <option value="34">Nha Sách Đà Nẵng </option>
-            <option value="35">Vincom Đà Nẵng</option>
-            <option value="36">SB Đà Nẵng </option>
-            <option value="37">Hội An </option>
-            <option value="38">Nha Trang </option>
-            <option value="39">Vincom Phan Rang </option>
-            <!-- Chi Nhánh TÂY NGUYÊN-->
-            <option value="410">Nha Sach Vinh</option>
-            <option value="41">>Nha Sach  Đà Lạt</option>
-            <option value="42">SB Lien Khuong </option>
-            <option value="43">Vincom Bảo Lộc </option>
-            <option value="44">Vincom Buôn Mê Thuột </option>
-            <option value="45">Kontum</option>
-             <!-- Chi Nhánh Miền Tây-->
-            <option value="51">Nhà Sách Cần Thơ </option>
-            <option value="52">Vincom Kiên Giang </option>
-            <option value="53">Vincom Vĩnh Long </option>
-            <option value="54">Đường sách Cao Lãnh </option>
-
-            </select>
+        <select id="clockinList">
+            <optgroup label="Miền Nam">
+                <option value="61">Văn Phòng</option>
+                <option value="63">Kho Vận</option>
+                <option value="11">BookCity Vạn Hạnh</option>
+                <option value="12">Lê Lợi </option>
+                <option value="13">Vincom Lê Thánh Tôn </option>
+                <option value="14">An Phú</option>
+                <option value="15">Estella </option>
+                <option value="16">Vincom Lê Văn Việt </option>
+                <option value="17">Kios Nguyễn Văn Bình</option>
+                <option value="18">Phú Thọ</option>
+                <option value="19">Ba Tháng Hai </option>
+                <option value="110">Đại Thế Giới </option>
+                <option value="111">Hùng Vương </option>
+                <option value="112">BookCity Hồng Bàng</option>
+                <option value="113">Crescent Mall </option>
+                <option value="114">Vivo City </option>
+                <option value="115">Nguyễn Oanh </option>
+                <option value="116">Vincom Cộng Hòa </option>
+                <option value="117">Rạch Miễu </option>
+                <option value="118">Nguyễn Ảnh Thủ </option>
+                <option value="119">Quang Trung </option>
+                <option value="120">BookCity Bình Dương </option>
+                <option value="121">Vincom Biên Hòa </option>
+                <option value="122">Đồng Khởi_Biên Hòa </option>
+                <option value="123">Nguyễn trãi </option>
+                <option value="124">Outlet Doi cung  </option>
+                <option value="125">Kontum Trần Phú </option>
+                <option value="126">Kiosk Thủ Đức </option>
+            </optgroup>
+            <optgroup label="Miền Bắc">
+                <option value="21">Vincom Hải Phòng</option>
+                <option value="22">Vincom Hạ Long</option>
+                <option value="23">GardenMall </option>
+                <option value="24">Lotte Center </option>
+                <option value="25">Vincom Bà Triệu </option>
+                <option value="26">Vincom Nguyen Chi Thanh </option>
+                <option value="27">Le Van Thiem </option>
+                <option value="28">Kiosk Phố Sách </option>
+                <option value="29">Lac Long Quan </option> 
+            </optgroup>
+            <optgroup label="Miền Trung">
+                <option value="31">Nha Sach Vinh</option>
+                <option value="32">Phú Xuân</option>
+                <option value="33">Sân Bay Phú Bài </option>
+                <option value="34">Nha Sách Đà Nẵng </option>
+                <option value="35">Vincom Đà Nẵng</option>
+                <option value="36">SB Đà Nẵng </option>
+                <option value="37">Hội An </option>
+                <option value="38">Nha Trang </option>
+                <option value="39">Vincom Phan Rang </option> 
+                <option value="410">NS Phan Thiết</option>
+            </optgroup>
+            <optgroup label="Tây Nguyên">
+                <option value="41">Nha Sach Đà Lạt</option>
+                <option value="42">SB Lien Khuong</option>
+                <option value="43">Vincom Bảo Lộc </option>
+                <option value="44">Vincom Buôn Mê Thuột </option>
+                <option value="45">Kontum</option> 
+            </optgroup>
+            <optgroup label="Miền Tây">
+                <option value="51">Nhà Sách Cần Thơ</option>
+                <option value="52">Vincom Kiên Giang</option>
+                <option value="53">Vincom Vĩnh Long </option>
+                <option value="54">Đường sách Cao Lãnh </option> 
+                
+            </optgroup>
+        </select>
+        
+    
             <button class="button" onclick="generateClockinCode()">Tạo mã chấm công</button>
             <div class="clockin-result" id="clockinResult">
                 <h3>Kết quả: </h3>
