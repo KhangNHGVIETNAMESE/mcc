@@ -12,60 +12,132 @@
             padding: 0;
         }
         .container {
-            max-width: 700px;
+            max-width: 800px;
             margin: 40px auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
         h2 {
             margin-top: 0;
+            font-size: 24px;
+            color: #333;
         }
         label {
             font-weight: bold;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: #555;
         }
         input[type="text"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 5px 0 15px 0;
-            border-radius: 5px;
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
         select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 5px 0 15px 0;
-            border-radius: 5px;
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
         .button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             background-color: #007bff;
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 15px;
         }
-        .clockin-code {
-            font-size: 24px;
+        .button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
-            white-space: pre-line;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .location-row {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .remove-row {
+            color: red;
+            cursor: pointer;
+            margin-top: 5px;
+            text-align: right;
+            display: block;
+        }
+        .add-row {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .location-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Mã chấm công</h2>
-        <label for="employeeIDs">Vui lòng nhập mã số nhân viên :</label>
-        <input type="text" id="employeeIDs">
-        <select id="clockinList">
-            <optgroup label="Miền Nam">
+        <h2>Tạo mã chấm công</h2>
+        <div id="locationInputs">
+            <!-- Các hàng nhập liệu sẽ được thêm vào đây -->
+        </div>
+        <div class="add-row">
+            <button class="button" onclick="addLocation()">Thêm địa điểm</button>
+        </div>
+        <button class="button" onclick="generateClockinCodes()">Tạo mã chấm công</button>
+        <div class="clockin-result" id="clockinResult">
+            <h3>Kết quả:</h3>
+            <table id="clockinTable">
+                <thead>
+                    <tr>
+                        <th>Mã số nhân viên</th>
+                        <th>Địa điểm</th>
+                        <th>Mã chấm công</th>
+                    </tr>
+                </thead>
+                <tbody id="clockinCode">
+                    <!-- Kết quả sẽ được thêm vào đây -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        var locationCount = 0;
+
+        function addLocation() {
+            locationCount++;
+            var container = document.getElementById('locationInputs');
+            var locationDiv = document.createElement('div');
+            locationDiv.className = 'location-row';
+            locationDiv.id = 'location' + locationCount;
+            locationDiv.innerHTML = `
+                <div class="location-title">Địa điểm ${locationCount}</div>
+                <label for="employeeIDs${locationCount}">Mã số nhân viên ${locationCount} (ngăn cách bằng dấu phẩy):</label>
+                <input type="text" id="employeeIDs${locationCount}" placeholder="Nhập mã số nhân viên">
+                <label for="clockinList${locationCount}">Chọn địa điểm:</label>
+                <select id="clockinList${locationCount}">
+                <optgroup label="Miền Nam">
                 <option value="61">Văn Phòng</option>
                 <option value="63">Kho Vận</option>
                 <option value="11">BookCity Vạn Hạnh</option>
@@ -136,66 +208,65 @@
                 
             </optgroup>
         </select>
-        
-    
-            <button class="button" onclick="generateClockinCode()">Tạo mã chấm công</button>
-            <div class="clockin-result" id="clockinResult">
-                <h3>Kết quả: </h3>
-                <div class="clockin-code" id="clockinCode"></div>
-            </div>
-                       
-    <script>
-        document.getElementById('open').onclick = function () {
-     var file = document.querySelector('#selectedFile').files[0];
-         if (!file) {
-             return;
-         }
-     workbook.import(file);
-};
-       
-        $(document).ready(function() {
-            $('#clockinList').selectize({
-                plugins: ['remove_button'],
-                delimiter: ',',
-                persist: false,
-                create: function(input) {
-                    return {
-                        value: input,
-                        text: input
-                    };
-                }
-            });
-        });
-        function generateClockinCode() {
-            var employeeIDs = document.getElementById('employeeIDs').value.trim();
-            if (employeeIDs === '') {
-                alert('Vui lòng nhập mã số nhân viên');
-                return;
+                </select>
+                <span class="remove-row" onclick="removeLocation(${locationCount})">Xóa địa điểm</span>
+            `;
+            container.appendChild(locationDiv);
+        }
+
+        function removeLocation(id) {
+            var locationDiv = document.getElementById('location' + id);
+            if (locationDiv) {
+                locationDiv.remove();
             }
-            
-            
-            var employeeIDArray = employeeIDs.split(',').map(function(item) {
-                return item.trim();
-            });
-            for (var i = 0; i < employeeIDArray.length; i++) {
-                if (!/^\d+$/.test(employeeIDArray[i])) {
-                    alert('Mã số nhân viên chỉ được chứa các ký tự số');
+        }
+
+        function generateClockinCodes() {
+            var tbody = document.getElementById('clockinCode');
+            tbody.innerHTML = '';  // Xóa kết quả cũ
+
+            for (var i = 1; i <= locationCount; i++) {
+                var clockinList = document.getElementById('clockinList' + i);
+                var selectedLocation = clockinList.options[clockinList.selectedIndex];
+                
+                if (!selectedLocation) {
+                    alert('Vui lòng chọn địa điểm cho địa điểm ' + i);
                     return;
                 }
-            }
-            var clockinList = document.getElementById('clockinList').value;
-            
-            var clockinCodes = '';
-            employeeIDArray.forEach(function(employeeID) {
-                var lastFiveDigits = employeeID.slice(-5);
-                var clockinCode = clockinList + lastFiveDigits;
-                clockinCodes += 'Mã số nhân viên: ' + employeeID + ', Mã chấm công: ' + '<br>' + clockinCode + '<br>';
-            });
-            
-            document.getElementById('clockinCode').innerHTML = clockinCodes;
 
-            
+                var employeeIDs = document.getElementById('employeeIDs' + i).value.trim();
+                if (employeeIDs === '') {
+                    alert('Vui lòng nhập mã số nhân viên tại địa điểm ' + i);
+                    return;
+                }
+
+                var employeeIDArray = employeeIDs.split(',').map(function(item) {
+                    return item.trim();
+                });
+                
+                for (var j = 0; j < employeeIDArray.length; j++) {
+                    var employeeID = employeeIDArray[j];
+                    if (!/^\d+$/.test(employeeID)) {
+                        alert('Mã số nhân viên tại địa điểm ' + i + ' chỉ được chứa các ký tự số');
+                        return;
+                    }
+
+                    var lastFiveDigits = employeeID.slice(-5);
+                    var clockinCode = selectedLocation.value + lastFiveDigits;
+                    var row = `<tr>
+                                    <td>${employeeID}</td>
+                                    <td>${selectedLocation.text}</td>
+                                    <td>${clockinCode}</td>
+                                </tr>`;
+                    tbody.innerHTML += row;
+                }
+            }
         }
+
+        // Thêm một địa điểm nhập liệu mặc định khi tải trang
+        document.addEventListener('DOMContentLoaded', function() {
+            addLocation();
+        });
     </script>
 </body>
 </html>
