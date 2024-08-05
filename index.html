@@ -6,101 +6,137 @@
     <title>Phần mềm tạo MÃ CHẤM CÔNG</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
             margin: 0;
             padding: 0;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 40px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         h2 {
-            margin-top: 0;
-            font-size: 24px;
-            color: #333;
+            margin: 0 0 20px;
+            font-size: 28px;
+            color: #333333;
+            border-bottom: 2px solid #1E90FF; /* Màu xanh dương đậm */
+            padding-bottom: 10px;
+        }
+        .location-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+            position: relative;
+        }
+        .location-title {
+            font-size: 22px;
+            color: #555555;
+            margin-bottom: 10px;
         }
         label {
-            font-weight: bold;
             display: block;
-            margin-bottom: 8px;
-            color: #555;
+            font-weight: bold;
+            color: #555555;
+            margin-bottom: 5px;
         }
-        input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
+        input[type="text"],
         select {
-            width: calc(100% - 22px);
+            width: calc(100% - 24px);
             padding: 12px;
-            margin: 10px 0;
-            border-radius: 4px;
+            border-radius: 6px;
             border: 1px solid #ccc;
+            margin-bottom: 15px;
             box-sizing: border-box;
         }
         .button {
             padding: 12px 24px;
-            background-color: #007bff;
-            color: #fff;
+            background-color: #1E90FF; /* Màu xanh dương đậm */
+            color: #ffffff;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 15px;
+            display: inline-block;
+            text-align: center;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
         }
         .button:hover {
-            background-color: #0056b3;
+            background-color: #187bcd;
+        }
+        .button:active {
+            background-color: #155a8a;
+            transform: scale(0.98);
+        }
+        .remove-row {
+            color: #e53935;
+            cursor: pointer;
+            text-decoration: underline;
+            display: block;
+            margin-top: 10px;
+            position: absolute;
+            right: 15px;
+            top: 15px;
+        }
+        .add-row {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .collapse-btn {
+            background: none;
+            border: none;
+            color: #1E90FF; /* Màu xanh dương đậm */
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+            margin: 0;
+            display: block;
+        }
+        .collapse-content {
+            display: none;
+            margin-top: 10px;
+        }
+        .collapse-content.active {
+            display: block;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
         th, td {
             padding: 12px;
             text-align: left;
+            border: 1px solid #ddd;
         }
         th {
-            background-color: #f4f4f4;
+            background-color: #1E90FF; /* Màu xanh dương đậm */
+            color: #ffffff;
         }
-        .location-row {
+        tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .alert {
+            color: #e53935;
+            font-weight: bold;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        .remove-row {
-            color: red;
-            cursor: pointer;
-            margin-top: 5px;
-            text-align: right;
-            display: block;
-        }
-        .add-row {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .location-title {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #333;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Tạo mã chấm công</h2>
+        <div id="alert" class="alert"></div>
         <div id="locationInputs">
-            <!-- Các hàng nhập liệu sẽ được thêm vào đây -->
+            <!-- Các nhóm địa điểm sẽ được thêm vào đây -->
         </div>
         <div class="add-row">
             <button class="button" onclick="addLocation()">Thêm địa điểm</button>
@@ -129,7 +165,7 @@
             locationCount++;
             var container = document.getElementById('locationInputs');
             var locationDiv = document.createElement('div');
-            locationDiv.className = 'location-row';
+            locationDiv.className = 'location-group';
             locationDiv.id = 'location' + locationCount;
             locationDiv.innerHTML = `
                 <div class="location-title">Địa điểm ${locationCount}</div>
@@ -137,7 +173,7 @@
                 <input type="text" id="employeeIDs${locationCount}" placeholder="Nhập mã số nhân viên">
                 <label for="clockinList${locationCount}">Chọn địa điểm:</label>
                 <select id="clockinList${locationCount}">
-                <optgroup label="Miền Nam">
+                    <optgroup label="Miền Nam">
                 <option value="61">Văn Phòng</option>
                 <option value="63">Kho Vận</option>
                 <option value="11">BookCity Vạn Hạnh</option>
@@ -208,7 +244,6 @@
                 
             </optgroup>
         </select>
-                </select>
                 <span class="remove-row" onclick="removeLocation(${locationCount})">Xóa địa điểm</span>
             `;
             container.appendChild(locationDiv);
@@ -218,55 +253,78 @@
             var locationDiv = document.getElementById('location' + id);
             if (locationDiv) {
                 locationDiv.remove();
+                updateLocationIds();
             }
         }
 
+        function updateLocationIds() {
+            var locationDivs = document.querySelectorAll('.location-group');
+            locationCount = locationDivs.length;
+            locationDivs.forEach(function(div, index) {
+                div.id = 'location' + (index + 1);
+                div.querySelector('.location-title').textContent = 'Địa điểm ' + (index + 1);
+                div.querySelector('label[for^="employeeIDs"]').setAttribute('for', 'employeeIDs' + (index + 1));
+                div.querySelector('label[for^="employeeIDs"]').textContent = 'Mã số nhân viên ' + (index + 1) + ' (ngăn cách bằng dấu phẩy):';
+                div.querySelector('input[type="text"]').setAttribute('id', 'employeeIDs' + (index + 1));
+                div.querySelector('select').setAttribute('id', 'clockinList' + (index + 1));
+                div.querySelector('.remove-row').setAttribute('onclick', 'removeLocation(' + (index + 1) + ')');
+            });
+        }
+
         function generateClockinCodes() {
+            var alertBox = document.getElementById('alert');
+            alertBox.innerHTML = ''; // Clear any previous alerts
+            var locationDivs = document.querySelectorAll('.location-group');
+            var locationIds = [];
+            var locationNames = {};
             var tbody = document.getElementById('clockinCode');
-            tbody.innerHTML = '';  // Xóa kết quả cũ
+            tbody.innerHTML = '';
 
-            for (var i = 1; i <= locationCount; i++) {
-                var clockinList = document.getElementById('clockinList' + i);
-                var selectedLocation = clockinList.options[clockinList.selectedIndex];
-                
-                if (!selectedLocation) {
-                    alert('Vui lòng chọn địa điểm cho địa điểm ' + i);
+            // Check for duplicate locations
+            locationDivs.forEach(function(div) {
+                var locationId = div.querySelector('select').value;
+                var locationName = div.querySelector('select').options[div.querySelector('select').selectedIndex].text;
+
+                if (locationIds.includes(locationId)) {
+                    alertBox.innerHTML = 'Bạn đã chọn địa điểm ' + locationName + ' nhiều lần. Vui lòng chọn mỗi địa điểm một lần.';
                     return;
                 }
+                locationIds.push(locationId);
+                locationNames[locationId] = locationName;
+            });
 
-                var employeeIDs = document.getElementById('employeeIDs' + i).value.trim();
-                if (employeeIDs === '') {
-                    alert('Vui lòng nhập mã số nhân viên tại địa điểm ' + i);
-                    return;
-                }
+            if (alertBox.innerHTML) return;
+
+            locationDivs.forEach(function(div) {
+                var locationId = div.querySelector('select').value;
+                var locationName = locationNames[locationId];
+                var employeeIDs = div.querySelector('input').value.trim();
+
+                if (employeeIDs === '') return;
 
                 var employeeIDArray = employeeIDs.split(',').map(function(item) {
                     return item.trim();
                 });
-                
+
                 for (var j = 0; j < employeeIDArray.length; j++) {
-                    var employeeID = employeeIDArray[j];
-                    if (!/^\d+$/.test(employeeID)) {
-                        alert('Mã số nhân viên tại địa điểm ' + i + ' chỉ được chứa các ký tự số');
+                    if (!/^\d+$/.test(employeeIDArray[j])) {
+                        alertBox.innerHTML = 'Mã số nhân viên chỉ được chứa các ký tự số tại địa điểm ' + locationName;
                         return;
                     }
+                }
 
+                employeeIDArray.forEach(function(employeeID) {
                     var lastFiveDigits = employeeID.slice(-5);
-                    var clockinCode = selectedLocation.value + lastFiveDigits;
+                    var clockinCode = locationId + lastFiveDigits;
                     var row = `<tr>
                                     <td>${employeeID}</td>
-                                    <td>${selectedLocation.text}</td>
+                                    <td>${locationName}</td>
                                     <td>${clockinCode}</td>
                                 </tr>`;
                     tbody.innerHTML += row;
-                }
-            }
+                });
+            });
         }
-
-        // Thêm một địa điểm nhập liệu mặc định khi tải trang
-        document.addEventListener('DOMContentLoaded', function() {
-            addLocation();
-        });
     </script>
 </body>
 </html>
